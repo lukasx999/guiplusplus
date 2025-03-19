@@ -1,0 +1,18 @@
+[
+ {
+  "directory": "/home/lukas/code/repos/ui",
+  "arguments": [
+   "clang++",
+   "-Wall",
+   "-Wextra",
+   "-std=c++23",
+   "-pedantic",
+   "-fsanitize=address,undefined",
+   "-ggdb",
+   "main.cc",
+   "-o",
+   "ui"
+  ],
+  "file": "main.cc"
+ }
+]
