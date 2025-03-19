@@ -49,8 +49,22 @@ public:
 
         ButtonStateAttribute &attr = m_attrs.at(m_state);
 
+        float padding = 0.3;
+
+        int text_height = m_rect.height;
+        int text_width = 1e9;
+        while (text_width > m_rect.width - padding*m_rect.width) {
+            text_height--;
+            text_width = MeasureText(m_text.c_str(), text_height);
+        }
+
         DrawRectangleRec(m_rect, attr.m_color_bg);
-        DrawText(m_text.c_str(), m_rect.x, m_rect.y, 50, attr.m_color_text);
+        DrawText(
+            m_text.c_str(),
+            m_rect.x + m_rect.width  / 2 - text_width  / 2.0,
+            m_rect.y + m_rect.height / 2 - text_height / 2.0,
+            text_height,
+            attr.m_color_text);
 
     }
 
@@ -75,7 +89,15 @@ int main() {
         { ButtonState::Pressed, ButtonStateAttribute(RED, WHITE) },
     };
 
-    Button btn1(10, 10, 500, 200, btn1_attrs, "A button!");
+    int btn_w = 500, btn_h = 200;
+    Button btn1(
+        width / 2 - btn_w / 2,
+        height / 2 - btn_h / 2,
+        btn_w,
+        btn_h,
+        btn1_attrs,
+        "A button!"
+    );
 
     InitWindow(width, height, "UI");
 
