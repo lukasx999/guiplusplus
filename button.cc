@@ -20,7 +20,7 @@ Button::Button(
     std::string text,
     float padding
 )
-    : Element(x, y, width, height)
+    : m_rect(x, y, width, height)
     , m_attrs(attrs)
     , m_text(text)
     , m_padding(std::clamp<float>(padding, 0.0, 0.9))
@@ -39,7 +39,7 @@ ButtonState Button::state() {
     return m_state;
 }
 
-Button &Button::update() {
+Button &Button::operator()() {
     set_state();
 
     ButtonStateAttribute &attr = m_attrs.at(m_state);
@@ -76,4 +76,44 @@ void Button::set_state() {
         m_state = IsMouseButtonDown(MOUSE_BUTTON_LEFT)
             ? ButtonState::Pressed
             : ButtonState::Hover;
+}
+
+ButtonBuilder &ButtonBuilder::set_x(int x) {
+    m_rect.x = x;
+    return *this;
+}
+ButtonBuilder &ButtonBuilder::set_y(int y) {
+    m_rect.y = y;
+    return *this;
+}
+ButtonBuilder &ButtonBuilder::set_width(int width) {
+    m_rect.width = width;
+    return *this;
+}
+
+ButtonBuilder &ButtonBuilder::set_height(int height) {
+    m_rect.height = height;
+    return *this;
+}
+
+ButtonBuilder &ButtonBuilder::set_text(std::string text) {
+    m_text = text;
+    return *this;
+}
+
+ButtonBuilder &ButtonBuilder::set_padding(float padding) {
+    m_padding = padding;
+    return *this;
+}
+
+Button ButtonBuilder::build() {
+
+    // TODO: add builder function and add this as default
+    ButtonAttributes attrs = {
+        { ButtonState::Idle,    ButtonStateAttribute(GRAY, WHITE) },
+        { ButtonState::Hover,   ButtonStateAttribute(BLUE, BLACK) },
+        { ButtonState::Pressed, ButtonStateAttribute(RED, WHITE) },
+    };
+
+    return Button(m_rect.x, m_rect.y, m_rect.width, m_rect.height, attrs, m_text, m_padding);
 }

@@ -1,6 +1,5 @@
 #include <print>
 #include <string>
-#include <unordered_map>
 
 #include <raylib.h>
 #include <raymath.h>
@@ -47,18 +46,29 @@ int main() {
 
     Switch sw(100, height/2, 300, 200, 0.75, GRAY, RED);
 
+    auto btn = ButtonBuilder()
+        .set_height(300)
+        .set_width(500)
+        .set_x(0)
+        .set_y(0)
+        .set_padding(0.3)
+        .set_text("hello")
+        .build();
+
     while (!WindowShouldClose()) {
         BeginDrawing();
         {
             ClearBackground(BLACK);
 
-            sw.update();
+            btn();
 
-            if (btn1.update().clicked()) {
+            sw();
+
+            if (btn1().clicked()) {
                 std::println("button 1 was clicked!");
             }
 
-            if (btn2.update().clicked()) {
+            if (btn2().clicked()) {
                 std::println("button 2 was clicked!");
             }
 

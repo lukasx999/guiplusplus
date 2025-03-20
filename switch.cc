@@ -7,12 +7,12 @@ Switch::Switch(int x, int y, int width, int height, float padding, Color color_b
     , m_color_circle(color_circle)
 {}
 
-Switch &Switch::update() {
+Switch &Switch::operator()() {
     set_state();
 
-    int switch_center_y   = m_rect.y + m_rect.height / 2.0;
-    int circle_left_x     = m_rect.x + m_rect.width * 0.25;
-    int circle_right_x    = m_rect.x + m_rect.width * 0.75;
+    int switch_center_y = m_rect.y + m_rect.height / 2.0;
+    int circle_left_x   = m_rect.x + m_rect.width * 0.25;
+    int circle_right_x  = m_rect.x + m_rect.width * 0.75;
 
     DrawCircle(
         circle_left_x,
@@ -64,6 +64,10 @@ Switch &Switch::update() {
 
 
     return *this;
+}
+
+bool Switch::is_on() {
+    return m_state;
 }
 
 void Switch::set_state() {

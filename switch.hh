@@ -14,7 +14,8 @@ class Switch : public Element {
     Color m_color_circle;
 public:
     Switch(int x, int y, int width, int height, float padding, Color color_bg, Color color_circle);
-    Switch &update();
+    Switch &operator()();
+    bool is_on();
 private:
     void set_state();
 };
