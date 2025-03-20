@@ -5,6 +5,8 @@ Switch::Switch(int x, int y, int width, int height)
 {}
 
 Switch &Switch::update() {
+    set_state();
+
     int switch_center_y   = m_rect.y + m_rect.height / 2.0;
     int circle_left_x     = m_rect.x + m_rect.width * 0.25;
     int circle_right_x    = m_rect.x + m_rect.width * 0.75;
@@ -34,22 +36,28 @@ Switch &Switch::update() {
 
 
 
-    DrawCircle(
-        circle_left_x,
-        switch_center_y,
-        50.0,
-        RED
-    );
+    if (m_state) {
+        DrawCircle(
+            circle_left_x,
+            switch_center_y,
+            50.0,
+            RED
+        );
+    } else {
 
-    DrawCircle(
-        circle_right_x,
-        switch_center_y,
-        50.0,
-        RED
-    );
+        DrawCircle(
+            circle_right_x,
+            switch_center_y,
+            50.0,
+            RED
+        );
+    }
+
 
     return *this;
 }
 
 void Switch::set_state() {
+    if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+        m_state = !m_state;
 }
