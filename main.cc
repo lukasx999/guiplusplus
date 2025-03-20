@@ -15,6 +15,7 @@ constexpr int height = 900;
 int main() {
 
     InitWindow(width, height, "UI");
+    SetTargetFPS(60);
 
     int btn_w = 500, btn_h = 200;
 
@@ -44,7 +45,7 @@ int main() {
         0.5
     );
 
-    Switch sw(100, height/2, 300, 200);
+    Switch sw(100, height/2, 300, 200, 0.75, GRAY, RED);
 
     while (!WindowShouldClose()) {
         BeginDrawing();
