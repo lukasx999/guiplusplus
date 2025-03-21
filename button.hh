@@ -5,8 +5,6 @@
 
 #include <raylib.h>
 
-#include "ui.hh"
-
 enum class ButtonState {
     Idle,
     Hover,
@@ -16,7 +14,11 @@ enum class ButtonState {
 struct ButtonStateAttribute {
     Color m_color_bg;
     Color m_color_text;
-    ButtonStateAttribute(Color color_bg, Color color_text);
+public:
+    ButtonStateAttribute(Color color_bg, Color color_text)
+        : m_color_bg(color_bg)
+        , m_color_text(color_text)
+    {}
 };
 
 typedef std::unordered_map<ButtonState, ButtonStateAttribute> ButtonAttributes;
@@ -33,8 +35,6 @@ public:
     Button(
         int x,
         int y,
-        int width,
-        int height,
         ButtonAttributes attrs,
         std::string text,
         float padding
@@ -49,16 +49,19 @@ private:
 };
 
 class ButtonBuilder {
-    Rectangle        m_rect;
-    ButtonAttributes m_attrs;
-    std::string      m_text;
-    float            m_padding;
+    float m_padding = 0.3;
+    int m_x = 0;
+    int m_y = 0;
+    ButtonAttributes m_attrs = {
+        { ButtonState::Idle,    ButtonStateAttribute(GRAY, WHITE)      },
+        { ButtonState::Hover,   ButtonStateAttribute(LIGHTGRAY, BLACK) },
+        { ButtonState::Pressed, ButtonStateAttribute(BLUE, WHITE)      },
+    };
+    std::string m_text = "button";
 public:
-    ButtonBuilder &set_x       (int x);
-    ButtonBuilder &set_y       (int y);
-    ButtonBuilder &set_width   (int width);
-    ButtonBuilder &set_height  (int height);
-    ButtonBuilder &set_text    (std::string text);
-    ButtonBuilder &set_padding (float padding);
+    ButtonBuilder &set_pos      (int x, int y);
+    ButtonBuilder &set_text     (std::string text);
+    ButtonBuilder &set_attribute(ButtonState state, ButtonStateAttribute attr);
+    ButtonBuilder &set_padding  (float padding);
     Button build();
 };

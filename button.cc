@@ -6,21 +6,14 @@
 
 #include "button.hh"
 
-ButtonStateAttribute::ButtonStateAttribute(Color color_bg, Color color_text)
-    : m_color_bg(color_bg)
-    , m_color_text(color_text)
-{}
-
 Button::Button(
     int x,
     int y,
-    int width,
-    int height,
     ButtonAttributes attrs,
     std::string text,
     float padding
 )
-    : m_rect(x, y, width, height)
+    : m_rect(x, y, 300, 200)
     , m_attrs(attrs)
     , m_text(text)
     , m_padding(std::clamp<float>(padding, 0.0, 0.9))
@@ -78,21 +71,17 @@ void Button::set_state() {
             : ButtonState::Hover;
 }
 
-ButtonBuilder &ButtonBuilder::set_x(int x) {
-    m_rect.x = x;
-    return *this;
-}
-ButtonBuilder &ButtonBuilder::set_y(int y) {
-    m_rect.y = y;
-    return *this;
-}
-ButtonBuilder &ButtonBuilder::set_width(int width) {
-    m_rect.width = width;
+ButtonBuilder &ButtonBuilder::set_pos(int x, int y) {
+    m_x = x;
+    m_y = y;
     return *this;
 }
 
-ButtonBuilder &ButtonBuilder::set_height(int height) {
-    m_rect.height = height;
+ButtonBuilder &ButtonBuilder::set_attribute(
+    ButtonState state,
+    ButtonStateAttribute attr
+) {
+    m_attrs.insert_or_assign(state, attr);
     return *this;
 }
 
@@ -107,13 +96,5 @@ ButtonBuilder &ButtonBuilder::set_padding(float padding) {
 }
 
 Button ButtonBuilder::build() {
-
-    // TODO: add builder function and add this as default
-    ButtonAttributes attrs = {
-        { ButtonState::Idle,    ButtonStateAttribute(GRAY, WHITE) },
-        { ButtonState::Hover,   ButtonStateAttribute(BLUE, BLACK) },
-        { ButtonState::Pressed, ButtonStateAttribute(RED, WHITE) },
-    };
-
-    return Button(m_rect.x, m_rect.y, m_rect.width, m_rect.height, attrs, m_text, m_padding);
+    return Button(m_x, m_y, m_attrs, m_text, m_padding);
 }

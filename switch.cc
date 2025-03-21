@@ -1,7 +1,15 @@
 #include "switch.hh"
 
-Switch::Switch(int x, int y, int width, int height, float padding, Color color_bg, Color color_circle)
-    : Element(x, y, width, height)
+Switch::Switch(
+    int x,
+    int y,
+    int width,
+    int height,
+    float padding,
+    Color color_bg,
+    Color color_circle
+)
+    : m_rect(x, y, width, height)
     , m_padding(std::clamp<float>(padding, 0.0, 0.9))
     , m_color_bg(color_bg)
     , m_color_circle(color_circle)
