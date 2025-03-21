@@ -5,6 +5,7 @@
 
 #include <raylib.h>
 
+#include "ui.hh"
 
 
 enum class ButtonState {
@@ -25,7 +26,7 @@ public:
 
 typedef std::unordered_map<ButtonState, ButtonStateAttribute> ButtonAttributes;
 
-class Button {
+class Button : public UiElement {
     ButtonAttributes m_attrs;
     std::string      m_text;
     ButtonState      m_state;
