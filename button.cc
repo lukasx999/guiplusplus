@@ -9,19 +9,19 @@
 Button::Button(
     int x,
     int y,
+    int text_height,
     ButtonAttributes attrs,
     std::string text,
     float padding
 )
-    : m_rect(x, y, 300, 200)
-    , m_attrs(attrs)
-    , m_text(text)
-    , m_padding(std::clamp<float>(padding, 0.0, 0.9))
-{
-    auto pair = calculate_text_size();
-    m_text_width  = std::get<0>(pair);
-    m_text_height = std::get<1>(pair);
-}
+    : m_attrs       (attrs)
+    , m_text        (text)
+    , m_state       (ButtonState::Idle)
+    , m_padding     (std::clamp<float>(padding, 0.0, std::numeric_limits<float>::max()))
+    , m_text_height (text_height)
+    , m_text_width  (MeasureText(m_text.c_str(), m_text_height))
+    , m_rect        (x, y, m_text_width * (1 + m_padding), m_text_height * (1 + m_padding))
+{}
 
 bool Button::clicked() {
     return m_state == ButtonState::Pressed
@@ -49,18 +49,6 @@ Button &Button::operator()() {
     return *this;
 }
 
-std::pair<int, int> Button::calculate_text_size() {
-    int text_height = m_rect.height;
-    int text_width = 1e9;
-
-    while (text_width > m_rect.width - m_padding * m_rect.width) {
-        text_height--;
-        text_width = MeasureText(m_text.c_str(), text_height);
-    }
-
-    return { text_width, text_height };
-}
-
 void Button::set_state() {
     Vector2 mpos = GetMousePosition();
 
@@ -71,9 +59,16 @@ void Button::set_state() {
             : ButtonState::Hover;
 }
 
+
+
 ButtonBuilder &ButtonBuilder::set_pos(int x, int y) {
     m_x = x;
     m_y = y;
+    return *this;
+}
+
+ButtonBuilder &ButtonBuilder::set_text_height(int text_height) {
+    m_text_height = text_height;
     return *this;
 }
 
@@ -96,5 +91,5 @@ ButtonBuilder &ButtonBuilder::set_padding(float padding) {
 }
 
 Button ButtonBuilder::build() {
-    return Button(m_x, m_y, m_attrs, m_text, m_padding);
+    return Button(m_x, m_y, m_text_height, m_attrs, m_text, m_padding);
 }

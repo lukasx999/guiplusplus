@@ -19,13 +19,21 @@ int main() {
     SetTargetFPS(60);
 
     Button a = ButtonBuilder()
-        .set_pos(50, 100)
+        .set_pos(300, 100)
+        .set_padding(0.1)
         .set_text("button a")
         .build();
 
     Button b = ButtonBuilder()
-        .set_pos(50, 400)
+        .set_pos(300, 400)
+        .set_padding(2)
         .set_text("button b")
+        .build();
+
+    Button c = ButtonBuilder()
+        .set_pos(300, 700)
+        .set_padding(0.5)
+        .set_text("button c")
         .build();
 
     while (!WindowShouldClose()) {
@@ -40,6 +48,8 @@ int main() {
             if (b().clicked()) {
                 std::println("b was clicked!");
             }
+
+            c();
 
         }
         EndDrawing();
